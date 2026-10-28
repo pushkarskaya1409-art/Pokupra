@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f3e9">
+<title>Чек-лист — Нужна ли мне эта покупка?</title>
+<style>
+:root{--paper:#fbf8f0;--ink:#17332e;--sage:#82957a;--sage-light:#e6eadf;--rose:#e9c7c0;--rose-light:#f8e8e4;--line:#d9ddcf;--muted:#64736a;--white:#fffdf8;--shadow:0 18px 50px #233d2b12}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 8% 5%,#f1e6df 0,transparent 28%),radial-gradient(circle at 95% 90%,#e8ecdf 0,transparent 26%),var(--paper);color:var(--ink);font-family:Arial,"Helvetica Neue",sans-serif;min-height:100vh;padding:28px 16px 40px}
+.shell{max-width:780px;margin:0 auto}.topline{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px;color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase}.brand{display:flex;align-items:center;gap:8px}.heart{font-size:22px;color:var(--sage)}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:#ffffff80}
+.card{background:#fffdf8eF;border:1px solid #e5e3d8;border-radius:28px;box-shadow:var(--shadow);overflow:hidden}
+.hero{padding:32px 34px 24px;position:relative}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#60765d;font-weight:700;margin:0 0 12px}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(32px,6vw,49px);line-height:1.05;font-weight:600;letter-spacing:-.035em;margin:0;max-width:620px}
+.highlight{display:inline;background:linear-gradient(transparent 62%,#f0d9d2 62%);padding:0 4px}.subtitle{font-size:16px;line-height:1.55;color:#53645c;max-width:540px;margin:17px 0 0}.leaf{position:absolute;right:30px;top:28px;font-size:54px;color:#81917a;transform:rotate(18deg);opacity:.7}
+.progress-wrap{padding:0 34px 22px}.progress-meta{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-bottom:9px}.progress{height:8px;background:#e9e9df;border-radius:99px;overflow:hidden}.bar{height:100%;width:10%;background:linear-gradient(90deg,#81967a,#b0bda2);border-radius:99px;transition:width .25s ease}
+.content{padding:28px 34px 32px;border-top:1px solid #ebe9df}.step-tag{display:inline-flex;align-items:center;gap:8px;background:var(--sage-light);color:#35523a;padding:8px 12px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.05em;margin-bottom:18px}.number{width:34px;height:34px;border-radius:50%;background:#82957a;color:white;display:inline-grid;place-items:center;font-weight:700;font-size:17px;margin-right:7px;vertical-align:middle}
+.question{font-size:clamp(22px,4vw,30px);line-height:1.3;letter-spacing:-.025em;font-weight:700;margin:0 0 25px;max-width:650px}
+.hint{color:var(--muted);font-size:14px;line-height:1.5;margin:-10px 0 22px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{border:2px solid var(--line);background:var(--white);border-radius:18px;padding:18px 16px;min-height:86px;display:flex;align-items:center;gap:12px;text-align:left;font-size:17px;font-weight:700;color:var(--ink);cursor:pointer;transition:transform .15s,border-color .15s,background .15s}.answer:hover{transform:translateY(-2px)}.answer.yes.selected{border-color:#81967a;background:#edf1e8}.answer.no.selected{border-color:#d58d83;background:#fff0ec}.symbol{height:28px;width:28px;flex:0 0 28px;border:2px solid #9aa994;border-radius:8px;display:grid;place-items:center;font-size:18px}.answer.no .symbol{border-color:#d9a19a}.answer.selected .symbol{background:#82957a;border-color:#82957a;color:white}.answer.no.selected .symbol{background:#cb8077;border-color:#cb8077}
+.navigation{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px}.btn{border:0;border-radius:99px;padding:14px 21px;font-size:14px;font-weight:700;cursor:pointer;transition:transform .15s,opacity .15s}.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}.btn-secondary{background:transparent;border:1px solid var(--line);color:var(--ink)}.btn-primary{background:var(--ink);color:white;min-width:145px}.privacy{font-size:12px;color:#7a867c;text-align:center;padding:17px 10px 0}
+.result{display:none;padding:28px 34px 34px;border-top:1px solid #ebe9df}.result.show{display:block}.result-label{font-size:12px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:#61765d}.result h2{font:600 clamp(29px,5vw,40px)/1.1 Georgia,serif;margin:12px 0}.result p{font-size:16px;line-height:1.65;color:#40554b}.scorebox{display:flex;align-items:center;gap:18px;padding:18px;background:#edf0e7;border-radius:18px;margin:22px 0}.score{font:600 35px Georgia,serif;white-space:nowrap}.score small{display:block;font:12px Arial,sans-serif;color:#64736a;margin-top:4px}.scoretext{font-size:14px;line-height:1.5;color:#50624f}.decision{padding:20px 22px;border-radius:18px;background:#f5f2e9;margin-top:16px}.decision.warning{background:#fff0ec;border:1px solid #edc6bf}.decision h3{margin:0 0 8px;font-size:17px}.decision p{margin:0;font-size:14px}.answer-list{margin:20px 0 0;padding:0;list-style:none;display:grid;gap:9px}.answer-list li{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.45;color:#53645c}.mini{width:23px;height:23px;flex:0 0 23px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:#e5eadf;color:#3f603f}.mini.no{background:#f6ded9;color:#a34e45}.quote{font:italic 19px/1.5 Georgia,serif;padding:18px 20px;border-left:4px solid #82957a;background:#f0f0e7;border-radius:0 16px 16px 0;margin:24px 0 0}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.footnote{font-size:12px!important;color:#758078!important;margin-top:16px!important}
+@media(max-width:560px){body{padding:12px 10px 24px}.topline{padding:4px 3px}.hero{padding:25px 22px 20px}.leaf{right:18px;top:22px;font-size:37px;opacity:.45}.hero h1{max-width:90%}.subtitle{font-size:15px}.progress-wrap{padding:0 22px 20px}.content,.result{padding:23px 22px 25px}.answers{grid-template-columns:1fr}.answer{min-height:66px;padding:14px 15px}.navigation{margin-top:22px}.btn{padding:13px 16px}.scorebox{align-items:flex-start;gap:12px}.score{font-size:30px}}
+@media print{body{background:white;padding:0}.topline,.navigation,.privacy,.result-actions{display:none!important}.card{box-shadow:none;border:0}.result{display:block!important}.content{display:none!important}.hero{padding-top:10px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topline"><div class="brand"><span class="heart">♡</span><span>Практика осознанных покупок</span></div><span class="pill">мини-пауза перед покупкой</span></div>
+  <main class="card">
+    <header class="hero">
+      <div class="eyebrow">Твой личный чек-лист</div>
+      <h1>Нужна ли мне <span class="highlight">эта покупка?</span></h1>
+      <p class="subtitle">10 простых вопросов, которые помогут остановиться, прислушаться к себе и принять осознанное решение.</p>
+      <div class="leaf" aria-hidden="true">⌁</div>
+    </header>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-meta"><span id="stepText">Вопрос 1 из 10</span><span id="percent">10%</span></div>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="10" id="progress"><div class="bar" id="bar"></div></div>
+    </div>
+    <section class="content" id="quiz" aria-live="polite">
+      <div class="step-tag"><span>✦</span> ОТВЕТЬ ЧЕСТНО, БЕЗ СПЕШКИ</div>
+      <h2 class="question" id="question"><span class="number">1</span> Эта покупка действительно решит мою проблему или закроет конкретную потребность?</h2>
+      <p class="hint" id="hint">Выбери один вариант. Здесь нет правильных или неправильных ответов — важно то, что подходит именно тебе.</p>
+      <div class="answers">
+        <button class="answer yes" id="yes" type="button" aria-pressed="false"><span class="symbol">✓</span><span>Да, это так</span></button>
+        <button class="answer no" id="no" type="button" aria-pressed="false"><span class="symbol">×</span><span>Нет, не совсем</span></button>
+      </div>
+      <div class="navigation">
+        <button class="btn btn-secondary" id="back" type="button" disabled>← Назад</button>
+        <button class="btn btn-primary" id="next" type="button" disabled>Далее →</button>
+      </div>
+      <div class="privacy">Твои ответы остаются в этом браузере и никуда не отправляются.</div>
+    </section>
+    <section class="result" id="result" aria-live="polite"></section>
+  </main>
+</div>
+<script>
+const questions = [
+"Эта покупка действительно решит мою проблему или закроет конкретную потребность?",
+"У меня нет дома вещи, которая может заменить эту покупку?",
+"Я выбрала эту вещь самостоятельно, а не под влиянием рекламы или чужих рекомендаций?",
+"Я принимаю решение о покупке в спокойном состоянии, а не из-за усталости, скуки или сильных эмоций?",
+"Стоимость этой вещи оправданна для меня, если сравнить её с моим временем и трудом?",
+"Я могу позволить себе эту покупку без ущерба для обязательных расходов и других важных целей?",
+"Я уверена, что буду регулярно пользоваться этой вещью и через год?",
+"Я проверила альтернативы и уверена, что эта вещь — действительно лучший вариант для меня?",
+"Я уже дала себе время подумать и моё желание купить эту вещь не исчезло?",
+"Я уверена, что через неделю буду рада этой покупке и не пожалею о потраченных деньгах?"
+];
+const hints = [
+"Подумай, какую именно задачу решит эта вещь.",
+"Возможно, у тебя уже есть что-то подходящее?",
+"Это твоё желание или оно появилось после чужого совета или рекламы?",
+"Сильные эмоции иногда подталкивают к спонтанным решениям.",
+"Сравни цену с пользой, которую вещь принесёт тебе.",
+"Обязательные расходы, долги и важные цели должны быть в безопасности.",
+"Представь, как часто вещь будет нужна тебе в обычной жизни.",
+"Проверь, есть ли вариант удобнее, долговечнее или дешевле.",
+"Если можешь, дай себе паузу перед оплатой.",
+"Представь, что прошла неделя: ты всё ещё рада своему решению?"
+];
+let current = 0;
+const answers = Array(questions.length).fill(null);
+const questionEl = document.getElementById('question');
+const hintEl = document.getElementById('hint');
+const yesBtn = document.getElementById('yes');
+const noBtn = document.getElementById('no');
+const nextBtn = document.getElementById('next');
+const backBtn = document.getElementById('back');
+const quiz = document.getElementById('quiz');
+const result = document.getElementById('result');
+function render(){
+  questionEl.innerHTML = `<span class="number">${current+1}</span> ${questions[current]}`;
+  hintEl.textContent = hints[current];
+  yesBtn.classList.toggle('selected', answers[current] === true);
+  noBtn.classList.toggle('selected', answers[current] === false);
+  yesBtn.setAttribute('aria-pressed', answers[current] === true);
+  noBtn.setAttribute('aria-pressed', answers[current] === false);
+  nextBtn.disabled = answers[current] === null;
+  nextBtn.textContent = current === questions.length-1 ? 'Узнать результат →' : 'Далее →';
+  backBtn.disabled = current === 0;
+  const progress = Math.round(((current+1)/questions.length)*100);
+  document.getElementById('stepText').textContent = `Вопрос ${current+1} из ${questions.length}`;
+  document.getElementById('percent').textContent = `${progress}%`;
+  document.getElementById('bar').style.width = `${progress}%`;
+  document.getElementById('progress').setAttribute('aria-valuenow', progress);
+}
+function choose(value){ answers[current] = value; render(); }
+yesBtn.addEventListener('click',()=>choose(true));
+noBtn.addEventListener('click',()=>choose(false));
+backBtn.addEventListener('click',()=>{if(current>0){current--;render();}});
+nextBtn.addEventListener('click',()=>{
+  if(answers[current]===null)return;
+  if(current<questions.length-1){current++;render();} else showResult();
+});
+function showResult(){
+  const yes = answers.filter(v=>v===true).length;
+  const no = 10-yes;
+  const budgetSafe = answers[5] === true;
+  let title, intro, className = '';
+  if(!budgetSafe){
+    title = 'С покупкой лучше подождать';
+    intro = 'Ты ответила «нет» на вопрос о бюджете. Даже если остальные ответы положительные, сейчас важнее сохранить финансовую устойчивость. Вернись к покупке позже, когда она не будет мешать обязательным расходам и важным целям.';
+    className = 'warning';
+  } else if(yes >= 8){
+    title = 'Похоже, покупка тебе действительно нужна';
+    intro = 'Большинство ответов — «да», и бюджет при этом в безопасности. Похоже, решение хорошо обдумано. Перед оплатой ещё раз проверь цену, качество и условия возврата.';
+  } else if(yes >= 5){
+    title = 'Возьми небольшую паузу';
+    intro = 'Есть причины купить эту вещь, но и сомнения тоже остались. Не спеши оплачивать: сравни альтернативы и вернись к решению через день-два.';
+  } else {
+    title = 'Возможно, это импульсивное желание';
+    intro = 'Сейчас у покупки больше сомнительных сторон, чем убедительных аргументов. Разумнее отложить её. Если вещь действительно нужна, это станет понятнее после паузы.';
+  }
+  const list = questions.map((q,i)=>`<li><span class="mini ${answers[i]?'':'no'}">${answers[i]?'✓':'×'}</span><span><strong>${i+1}. ${answers[i]?'Да':'Нет'}.</strong> ${q}</span></li>`).join('');
+  result.innerHTML = `
+    <div class="result-label">Твой результат</div>
+    <h2>${title}</h2>
+    <p>${intro}</p>
+    <div class="scorebox"><div class="score">${yes} из 10<small>ответов «Да»</small></div><div class="scoretext">Ответов «Нет»: <strong>${no}</strong><br>Это не экзамен — используй результат как подсказку, а не как строгий вердикт.</div></div>
+    <div class="decision ${className}"><h3>${budgetSafe?'✦ На что обратить внимание':'! Финансовая безопасность прежде всего'}</h3><p>${budgetSafe?'Количество ответов помогает увидеть общую картину, но окончательное решение остаётся за тобой.':'Отрицательный ответ на вопрос № 6 — повод отложить покупку, независимо от количества остальных ответов «Да».'}</p></div>
+    <div class="quote">«Если сомневаешься — не покупай прямо сейчас. Вещь никуда не исчезнет, а деньги останутся с тобой».</div>
+    <ul class="answer-list">${list}</ul>
+    <div class="result-actions"><button class="btn btn-primary" id="restart" type="button">Пройти ещё раз ↻</button><button class="btn btn-secondary" id="print" type="button">Распечатать результат</button></div>
+    <p class="footnote">Подсказка: если желание не исчезло через паузу и покупка не мешает важным финансовым целям, ты сможешь вернуться к решению спокойнее.</p>`;
+  quiz.style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  result.classList.add('show');
+  document.getElementById('restart').addEventListener('click',restart);
+  document.getElementById('print').addEventListener('click',()=>window.print());
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function restart(){
+  current=0; answers.fill(null);
+  result.classList.remove('show'); result.innerHTML='';
+  quiz.style.display='block'; document.getElementById('progressWrap').style.display='block';
+  render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+</body>
+</html>
